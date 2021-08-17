@@ -1,1 +1,1 @@
-TOKEN_SECRET='checkout my secret"
+JWT_SECRET='checkout my secret"
