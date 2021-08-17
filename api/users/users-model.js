@@ -31,11 +31,20 @@ where u.role_id = r.role_id
 }
 
 function findBy(filter) {
-  return db('users').filter()
+  return db('users as u')
+  .join('roles as r','u.role_id', '=', 'r.role_id')
+  .select('u.user_id', 'u.username', 'u.password', 'r.role_name as role_name')
+  .where(filter);
+
   /**
     You will need to join two tables.
     Resolves to an ARRAY with all users that match the filter condition.
 
+      RAW SQL ->
+      select u.user_id, u.username, u.password, r.role_name as role 
+      from users as u
+      join roles as r
+      where u.role_id = r.role_id
     [
       {
         "user_id": 1,
