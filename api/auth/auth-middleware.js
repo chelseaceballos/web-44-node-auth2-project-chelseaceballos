@@ -2,24 +2,24 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require("../secrets"); // use this secret!
 
 const restricted = (req, res, next) => { 
-  const token = req.headers.authorization
+  // const token = req.headers.authorization
 
-  if (token) {
-    // async function
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
-      if(err){
-        // token does not match path
-        next({status: 401, message: "Token invalid"})
-      } else {
-          //happy path
-        req.decodedJwt = decoded
-        next()
-      }
-    }) // old style node async callback, error first
-  } else {
-    next({status: 401, message: "Token required"})
-  }
-
+  // if (token) {
+  //   // async function
+  //   jwt.verify(token, JWT_SECRET, (err, decoded) => {
+  //     if(err){
+  //       // token does not match path
+  //       next({status: 401, message: "Token invalid"})
+  //     } else {
+  //         //happy path
+  //       req.decodedJwt = decoded
+  //       next()
+  //     }
+  //   }) // old style node async callback, error first
+  // } else {
+  //   next({status: 401, message: "Token required"})
+  // }
+next()
   /*
     If the user does not provide a token in the Authorization header:
     status 401
@@ -48,10 +48,19 @@ const only = role_name => (req, res, next) => {
 
     Pull the decoded token from the req object, to avoid verifying it again!
   */
+ next()
 }
 
 
 const checkUsernameExists = (req, res, next) => {
+  //here
+  const {username} = req.body
+  if(username) {
+    next()
+  } else {
+    next({status: 401, message: "Invalid credentials"})
+  }
+
   /*
     If the username in req.body does NOT exist in the database
     status 401
