@@ -1,6 +1,24 @@
 const { JWT_SECRET } = require("../secrets"); // use this secret!
 
-const restricted = (req, res, next) => {
+const restricted = (req, res, next) => { 
+  const token = req.headers.authorization
+
+  if (token) {
+    // async function
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+      if(err){
+        // token does not match path
+        next({status: 401, message: "Token invalid"})
+      } else {
+          //happy path
+        req.decodedJwt = decoded
+        next()
+      }
+    }) // old style node async callback, error first
+  } else {
+    next({status: 401, message: "Token required"})
+  }
+
   /*
     If the user does not provide a token in the Authorization header:
     status 401
