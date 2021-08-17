@@ -7,7 +7,7 @@ function find() {
 
   /**
     You will need to join two tables.
-    Resolves to an ARRAY with all users.
+    Resolves to an ARRAY with all users. 
 
 RAW SQL
 select u.user_id, u.username, r.role_name as role 
